@@ -4,8 +4,6 @@
 
 ![Demo](./static/demo.png)
 
-![Demo](./static/demo1.png)
-
 ## Build Setup
 
 ```bash
