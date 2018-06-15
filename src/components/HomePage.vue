@@ -1,8 +1,8 @@
 <template>
   <div>
     <div style="text-align:center">
-      <h1>Auto Passport Genenrator</h1>
-      <p>Upload Image of Face and Specify Dimensions for Passport Photograph Below</p>
+      <h1>Generator of Passport Photos</h1>
+      <p>Upload an image of a face and specify the dimensions of the passport photo.</p>
     </div>
 
     <div class="container">
@@ -10,12 +10,12 @@
         <div class="col-md-6">
             <form enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="">Name:</label>
+                    <label for="">Name</label>
                     <input type="text" required class="form-control" placeholder="eg Chris" name="subject_name" v-model="model.name">
                 </div>
 
                 <div class="form-group">
-                    <label for="">File:</label>
+                    <label for="">File</label>
                     <input type="file" class="form-control" accept="image/*" name="image" v-on:change="upload($event.target.files)">
                 </div>
 
@@ -42,25 +42,25 @@
 
       <div class="row">
         <div class="col-md-3">
-            <label for="">Height (px)</label>
+            <label for="">Height (pixels)</label>
             <input type="number" class="form-control" placeholder="600" v-model="height">
         </div>
 
         <div class="col-md-3">
-          <label for="">Width (px)</label>
+          <label for="">Width (pixels)</label>
           <input class="form-control" type="number" placeholder="400" v-model="width">
         </div>
 
         <template v-if="passport_pic != null">
           <div class="col-md-6">
-            <label for="">Passport URL</label>
+            <label for="">Passport-Photo URL</label>
             <input class="form-control" readonly="readonly" :value="passport_pic">
           </div>
         </template>
       </div>
 
       <div style="margin-top: 20px; ">
-        <input type="button" class="btn btn-primary" value="Generate Passport" v-on:click="onSubmit">
+        <input type="button" class="btn btn-primary" value="Generate Passport Photo" v-on:click="onSubmit">
       </div>
     </div>
   </div>

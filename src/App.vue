@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/cloudinary.png" height="200px">
+    <img src="./assets/logo.png" height="200px">
     <router-view/>
   </div>
 </template>
