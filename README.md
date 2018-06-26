@@ -2,7 +2,7 @@
 
 > Building an auto passport generator
 
-![Demo](./static/demo.png)
+![demo](https://user-images.githubusercontent.com/19610753/41920788-55c576e8-7959-11e8-9332-780735e6d8e5.png)
 
 ## Build Setup
 
