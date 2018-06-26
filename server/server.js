@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const multipartMiddleware = multipart();
 
 cloudinary.config({
-  cloud_name: "CLOUDNAME",
+  cloud_name: "CLOUD_NAME",
   api_key: "API_KEY",
   api_secret: "API_SECRET"
 });
@@ -20,7 +20,7 @@ cloudinary.config({
 
 app.post("/upload", multipartMiddleware, function (req, res) {
   cloudinary.uploader.upload(
-    req.files.image.path,
+    req.body.image,
     {
       transformation: [
         {
@@ -31,7 +31,7 @@ app.post("/upload", multipartMiddleware, function (req, res) {
         }
       ],
       colors: true,
-      detection: "adv_face" // to detect face
+      // detection: "adv_face" // to detect face
     },
     function (err, image) {
       if (err) {

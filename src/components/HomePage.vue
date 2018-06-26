@@ -8,7 +8,6 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-            <form enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="">Name</label>
                     <input type="text" required class="form-control" placeholder="eg Chris" name="subject_name" v-model="model.name">
@@ -16,20 +15,24 @@
 
                 <div class="form-group">
                     <label for="">File</label>
-                    <input type="file" class="form-control" accept="image/*" name="image" v-on:change="upload($event.target.files)">
+                    <div class="form-group">
+                       <button class="form-control btn btn-default" @click="openWidget()"> Click to upload Image </button>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     {{ loading }}
                     {{ uploadStatus }}
                 </div>
-            </form>
+            <div>
+             
+            </div>
         </div>
 
         <div class="col-md-6">
             <p style="text-align:center;"><strong>Image Preview</strong></p>
-            <div class="col-md-6" style="text-align:center;">
-                <img id="face_preview1" class="img-responsive" alt="" width="200" height="200">
+            <div class="col-md-6" style="text-align:center;" v-if="file">
+                <img id="face_preview1" :src="preview" class="img-responsive" alt="" width="200" height="200">
             </div>
 
             <template v-if="passport_pic != null">
@@ -73,6 +76,8 @@ export default {
   name: "HomePage",
   data() {
     return {
+      file: null,
+      preview: null,
       model: {
         name: "",
         image: null
@@ -85,24 +90,26 @@ export default {
     };
   },
   methods: {
-    upload: function(files) {
-      this.model.image = files[0];
-      this.uploadStatus = "";
-      this.showPreview(files[0]);
+    openWidget(url) {
+      window.cloudinary.openUploadWidget(
+        {
+          cloud_name: "CLOUD_NAME",
+          upload_preset: "PRESET",
+          tags: ["image"],
+          sources: ["local", "url"]
+        },
+        (error, result) => {
+          this.file = result[0];
+          this.preview = this.file.secure_url;
+        }
+      );
     },
-    showPreview: function(file) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        document.getElementById("face_preview1").src = e.target.result;
-      };
-      // read the image file as a data URL.
-      reader.readAsDataURL(file);
-    },
-onSubmit: function() {
+
+    onSubmit: function() {
       // Assemble form data
       this.uploadStatus = "";
       const formData = new FormData();
-      formData.append("image", this.model.image);
+      formData.append("image", this.file.secure_url);
       formData.append("width", this.width);
       formData.append("height", this.height);
       this.loading = "Processing....Please be patient.";
