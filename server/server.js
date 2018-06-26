@@ -12,39 +12,45 @@ app.use(bodyParser.json());
 const multipartMiddleware = multipart();
 
 cloudinary.config({
-  cloud_name: "CLOUD_NAME",
+  cloud_name: "CLOUDNAME",
   api_key: "API_KEY",
   api_secret: "API_SECRET"
 });
 
 
-app.post("/upload", multipartMiddleware, function(req, res) {
+app.post("/upload", multipartMiddleware, function (req, res) {
   cloudinary.uploader.upload(
     req.files.image.path,
     {
       transformation: [
-        { 
-            width: req.body.width, 
-            height: req.body.height,
-            gravity: "face",
-            crop: "thumb"
+        {
+          width: req.body.width,
+          height: req.body.height,
+          gravity: "face",
+          crop: "thumb"
         }
       ],
-      colors: true
+      colors: true,
+      detection: "adv_face" // to detect face
     },
-    function(err, image) {
-        if(err){
-            return res.json({ error : "Sorry and error occured processing your image"})
-        }
-        // fetch predominant colors
+    function (err, image) {
+      if (err) {
+        return res.json({ error: "Sorry and error occured processing your image" })
+      }
+
+      // is equal or greater than 1
+      if (image.info.detection.adv_face.data[0].attributes.smile >= 1) {
+        return res.json({ error: "Kindly retake the picture, image rejected because you were smiling" })
+      }
+      // fetch predominant colors
       let predominant_color = image.predominant.google[0][0];
       let predominant_color2 = image.predominant.google[1][0];
-      if( predominant_color == 'white' && predominant_color == 'white' ){
+      if (predominant_color == 'white' && predominant_color == 'white') {
         return res.json({ url: image.url });
-      }else{
+      } else {
         return res.json({
           error: "Sorry, your image should have a predominantly white background"
-        });  
+        });
       }
     }
   );
